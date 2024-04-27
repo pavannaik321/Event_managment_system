@@ -1,6 +1,11 @@
 const express = require('express')
 const app = express();
 
+const connection = require('./db/Configuration')
+
+connection();
+
+
 app.get('/',(req,res)=>{
     res.send('server is running')
 })
