@@ -6,6 +6,10 @@ const PORT = 8000 || 3000
 // middlewares
 app.use(cors({
     credentials: true,
+    origin: ["http://localhost:5173","http://localhost:5173"],
+    methods:["POST","GET","PUT"],
+  },{
+    credentials: true,
     origin: ["http://localhost:5173","http://localhost:5174"],
     methods:["POST","GET","PUT"],
   }));
