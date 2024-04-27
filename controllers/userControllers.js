@@ -9,7 +9,7 @@ const registerUser = async (req, res) => {
         const { username, email, password } = req.body;
 
         // Validate the input
-        if (!username && !email && !password) {
+        if (!username || !email || !password) {
             return res.status(400).json({ error: 'Please enter all the fields' });
         }
         // Check if the email is already registered
@@ -29,17 +29,30 @@ const registerUser = async (req, res) => {
     }
 }
 
-const loginUser = (req, res) => {
-    // try {
-    //     const { email, password } = req.body
+const loginUser = async(req, res) => {
+    try {
+        const { email, password } = req.body
 
-    //     //Check if the email and
-        
-    // }
-    // catch (error) {
-    //     console.error(error);
-    //     res.status(500).json({ error: 'Server error' });
-    // }
+        //Check if the email and password exist
+        if(!email || !password){
+            return res.status(400).json({error: 'Please enter all the fields'})
+        }
+        //Check if the user exists
+        const existingUser = await User.findOne({email})
+        if(!existingUser){
+            return res.status(400).json({error: 'User does not exist'})
+        }
+        //Check if the password is correct
+        if(password==existingUser.password)
+        {
+            return res.status(200).json({message: 'User logged in successfully'})
+        }
+        res.status(400).json({error: 'Invalid credentials'})
+        }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
 }
 
 module.exports = {
