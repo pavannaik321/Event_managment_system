@@ -24,13 +24,19 @@ bookingRoutes.post('/book', async (req, res) => {
 
 bookingRoutes.get('/bookings',async (req,res)=>{
     try {
-        console.log(req.body)
-        const bookings = await Booking.find();
+        const bookings = await Booking.find()
+            .populate('user', 'username email') 
+            .populate('vendorId') 
+            .populate('food')
+            .populate('photo');
+        
         res.json(bookings);
     } catch (error) {
+      
         console.error(error);
         res.status(500).json({ error: 'An error occurred while fetching bookings.' });
     }
+   
 })
 
 module.exports = bookingRoutes;

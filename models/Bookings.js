@@ -9,7 +9,9 @@ const BookingSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'Users' }, // Corrected reference to Users model
     vendorId: { type: Schema.Types.ObjectId, ref: 'Venue' },
     food: { type: Schema.Types.ObjectId, ref: 'Food' },
-    photo: { type: Schema.Types.ObjectId, ref: 'Photo' }
+    photo: { type: Schema.Types.ObjectId, ref: 'Photography' },
+    startTime: { type: Date},
+    endTime: { type: Date}
 });
 
 const Booking = mongoose.model('Booking', BookingSchema);
