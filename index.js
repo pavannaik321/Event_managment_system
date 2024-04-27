@@ -1,6 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const cookieParser = require('cookie-parser');
+
+// Use cookie-parser middleware
+app.use(cookieParser());
 
 const userRoutes = require('./routes/userRoutes')
 const adminRoutes = require('./routes/AdminRoutes')

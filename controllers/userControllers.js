@@ -1,13 +1,10 @@
 const User = require('../models/Users')
 const jwttoken = require("jsonwebtoken")
 
-const getUserdetails = (req, res) => {
-    // try {
-        
-    // } catch (error) {
-    //     res.status(500).json({error: "Onga Aaya" })
-    // }
+const getUserdetails = async(req, res) => {
+    res.status(500).json(req.user)
 }
+
 
 const registerUser = async (req, res) => {
     try {
@@ -55,8 +52,8 @@ const loginUser = async(req, res) => {
         //generate jwttoken 
         
         const token = jwttoken.sign({email:existingUser.email},"matharchord",{expiresIn:'2h'})
+        res.cookie('token',token);
         res.status(200).json(token)
-
     }
     catch (error) {
         console.error(error);

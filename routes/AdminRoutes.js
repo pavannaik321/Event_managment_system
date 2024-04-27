@@ -38,6 +38,33 @@ adminRouter.post('/addPhotographer',async (req,res)=>{
       }
 })
 
+
+adminRouter.post("/register",async(req,res)=>{
+  try {
+    const { vendorname, email,phone, password,venderoffice} = req.body;
+
+    // Validate the input
+    if (!vendorname || !email || !password || !venderoffice || !phone) {
+        return res.status(400).json({ error: 'Please enter all the fields' });
+    }
+    // Check if the email is already registered
+    const existingVendor = await Admin.findOne({ email });
+    if (existingVendor) {
+        return res.status(400).json({ error: 'Email is already registered' });
+    }
+
+    // Create a new user
+    const newVendor = new Admin({ vendorname, email,phone, password,venderoffice});
+    await newVendor.save();
+
+    res.status(201).json({ message: 'vendor registered successfully' });
+} catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Server error' });
+}
+})
+
+
 adminRouter.post("/login",async(req,res)=>{
   const { email, password } = req.body;
   try {

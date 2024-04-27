@@ -1,12 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
+const Food = require('./Food')
+const Photography = require('./Photography')
 
-const venueSchema = new mongoose.Schema({
-  name: {
+const Schema = mongoose.Schema
+
+const venueSchema = mongoose.Schema({
+  venueName: {
     type: String,
     required: true
   },
   photos: [{
-    type: String 
+    type: String
   }],
   location: {
     type: String,
@@ -24,11 +28,20 @@ const venueSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  ownerID: {
+  foodIDs: [{
+    type: Schema.Types.ObjectId,
+    ref: Food
+  }],
+  photographIDs: [{
+    type: Schema.Types.ObjectId,
+    ref: Photography
+  }],
+  adminID: {
     type: String,
     required: true
-  },
+  }
 }, { timestamps: true }); 
+
 
 const Venue = mongoose.model('Venue', venueSchema);
 
