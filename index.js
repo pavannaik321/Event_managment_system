@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+
+// dont touch below this
+
 const PORT = 8000 || 3000;
 
 // Middlewares
@@ -15,6 +18,8 @@ app.use(express.json());
 
 const connection = require('./db/Configuration');
 connection();
+
+// dont touch above this 
 
 app.get('/', (req, res) => {
   res.send('server is running');
