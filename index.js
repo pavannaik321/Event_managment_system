@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/users',userRoutes)
-// app.use('/admin',adminRoutes)
+app.use('/admin',adminRoutes)
 // app.use('/booking',bookingRoutes)
 // app.use('/venue',venueRoutes)
 
