@@ -93,7 +93,7 @@ adminRouter.post('/addPhotographer', authenticateAdmin, async (req, res) => {
 })
 
 
-adminRouter.post("/register", async (req, res) => {
+ adminRouter.post("/register", async (req, res) => {
   try {
     const { vendorname, email, phone, venderoffice, password } = req.body;
     console.log("1")
@@ -110,8 +110,8 @@ adminRouter.post("/register", async (req, res) => {
       return res.status(400).json({ error: 'Email is already registered' });
     }
     console.log("4")
-        // Create a new user
-        const newAdmin = new Admin({ vendorname, email, phone, venderoffice, password } );
+        // Create a new user with a dummy username
+        const newAdmin = new Admin({ vendorname, email, phone, venderoffice, password, username: 'dummyUsername' } );
         console.log("5")
         await newAdmin.save();
         console.log("6")
