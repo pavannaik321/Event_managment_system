@@ -4,7 +4,6 @@ const adminSchema = new mongoose.Schema({
   vendorname: {
     type: String,
     required: true,
-    unique: true 
   },
   email: {
     type: String,
@@ -27,7 +26,7 @@ const adminSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: venue
   }
-}, { timestamps: true }); 
+}); 
 
 const Admin = mongoose.model('Admin', adminSchema);
 

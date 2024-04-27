@@ -35,11 +35,7 @@ const venueSchema = mongoose.Schema({
   photographIDs: [{
     type: Schema.Types.ObjectId,
     ref: Photography
-  }],
-  adminID: {
-    type: String,
-    required: true
-  }
+  }]
 }, { timestamps: true }); 
 
 

@@ -5,8 +5,9 @@ const Food = require('../models/Food')
 const Admin = require('../models/Admins')
 const jwttoken = require("jsonwebtoken");
 const { authenticateAdmin } = require('../middleware/authMiddleware');
+const Venue = require('../models/Venue');
 
-adminRouter.post('/addFood',authenticateAdmin, async (req, res) => {
+adminRouter.post('/addFood', authenticateAdmin, async (req, res) => {
   try {
     const { cateringName, price, menu, type } = req.body;
     const newFood = new Food({
@@ -16,14 +17,55 @@ adminRouter.post('/addFood',authenticateAdmin, async (req, res) => {
       type
     });
     const savedFood = await newFood.save();
-    res.status(201).json(savedFood);
+    console.log("saved Food : ", savedFood)
+    // get the Venue collection
+    const Admin_venue = req.admin.venue.toString();
+    // console.log("venue Id : ", Admin_venue.toString());
+    console.log(savedFood._id);
+    const newVenue = await Venue.findOneAndUpdate({ '_id': Admin_venue }, {
+      $push: {
+        foodIDs: savedFood._id
+      }
+    }, { new: true })
+    // modify the venue table
+
+
+    res.status(201).json(newVenue);
   } catch (error) {
     console.error('Error creating food:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 })
 
-adminRouter.post('/addPhotographer',authenticateAdmin, async (req, res) => {
+adminRouter.post('/addVenue', authenticateAdmin, async (req, res) => {
+
+  try {
+    const { venueName, location, capacity, description, price } = req.body;
+
+    const newVenue = new Venue({ venueName, location, capacity, description, price });
+    const savedVenue = await newVenue.save();
+
+    const email = req.admin.email
+    console.log(savedVenue._id);
+    console.log(req.admin.email)
+
+    const updatedAdmin = await Admin.findOneAndUpdate(
+      { email }
+      ,
+      {
+        $push: {
+          venue: savedVenue._id
+        }
+      }
+    )
+    res.status(201).json(updatedAdmin);
+  } catch (error) {
+    console.error('Error creating photography service:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+})
+
+adminRouter.post('/addPhotographer', authenticateAdmin, async (req, res) => {
   console.log(req.body.Studioname)
   try {
     const { Studioname, description, price } = req.body;
@@ -33,7 +75,17 @@ adminRouter.post('/addPhotographer',authenticateAdmin, async (req, res) => {
       price
     });
     const savedPhotography = await newPhotography.save();
-    res.status(201).json(savedPhotography);
+
+    // get the Venue collection
+    const Admin_venue = req.admin.venue.toString();
+    const newVenue = await Venue.findOneAndUpdate({ '_id': Admin_venue }, {
+      $push: {
+        photographIDs: savedPhotography._id
+      }
+    }, { new: true })
+
+
+    res.status(201).json(newVenue);
   } catch (error) {
     console.error('Error creating photography service:', error);
     res.status(500).json({ error: 'Internal server error' });
@@ -43,21 +95,26 @@ adminRouter.post('/addPhotographer',authenticateAdmin, async (req, res) => {
 
 adminRouter.post("/register", async (req, res) => {
   try {
-    const { vendorname, email, phone, password, venderoffice } = req.body;
-
+    const { vendorname, email, phone, venderoffice, password } = req.body;
+    console.log("1")
+    console.log(req.body)
     // Validate the input
     if (!vendorname || !email || !password || !venderoffice || !phone) {
       return res.status(400).json({ error: 'Please enter all the fields' });
     }
+    console.log("2")
     // Check if the email is already registered
     const existingVendor = await Admin.findOne({ email });
+    console.log("3")
     if (existingVendor) {
       return res.status(400).json({ error: 'Email is already registered' });
     }
-
-    // Create a new user
-    const newVendor = new Admin({ vendorname, email, phone, password, venderoffice });
-    await newVendor.save();
+    console.log("4")
+        // Create a new user
+        const newAdmin = new Admin({ vendorname, email, phone, venderoffice, password } );
+        console.log("5")
+        await newAdmin.save();
+        console.log("6")
 
     res.status(201).json({ message: 'vendor registered successfully' });
   } catch (error) {
