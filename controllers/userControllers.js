@@ -1,7 +1,12 @@
 const User = require('../models/Users')
+const jwttoken = require("jsonwebtoken")
 
 const getUserdetails = (req, res) => {
-    res.send('user Detals')
+    // try {
+        
+    // } catch (error) {
+    //     res.status(500).json({error: "Onga Aaya" })
+    // }
 }
 
 const registerUser = async (req, res) => {
@@ -43,12 +48,16 @@ const loginUser = async(req, res) => {
             return res.status(400).json({error: 'User does not exist'})
         }
         //Check if the password is correct
-        if(password==existingUser.password)
+        if(!(password==existingUser.password))
         {
-            return res.status(200).json({message: 'User logged in successfully'})
+            return res.status(400).json({error: 'Invalid credentials'})
         }
-        res.status(400).json({error: 'Invalid credentials'})
-        }
+        //generate jwttoken 
+        
+        const token = jwttoken.sign({email:existingUser.email},"matharchord",{expiresIn:'2h'})
+        res.status(200).json(token)
+
+    }
     catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Server error' });
