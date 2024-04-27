@@ -1,9 +1,12 @@
 const User = require('../models/Users')
 const jwttoken = require("jsonwebtoken")
+const Venue = require('../models/Venue')
 
 const getUserdetails = async(req, res) => {
     res.status(500).json(req.user)
 }
+
+
 
 
 const registerUser = async (req, res) => {
