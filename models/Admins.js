@@ -12,7 +12,7 @@ const adminSchema = new mongoose.Schema({
   },
   phone: {
     type: Number,
-    required: true,
+    required: true
   },
   venderoffice: {
     type: String,
