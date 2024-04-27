@@ -7,6 +7,37 @@ const jwttoken = require("jsonwebtoken");
 const { authenticateAdmin } = require('../middleware/authMiddleware');
 const Venue = require('../models/Venue');
 
+// get all the venue details and food details and photography details etc
+
+adminRouter.get('/', authenticateAdmin, async (req, res) => {
+  try {
+    const email = req.admin.email;
+    const data = await Admin.findOne({ email })
+      .populate({
+        path: 'venue',
+        populate: {
+          path: 'foodIDs',
+          model: 'Food',
+          options: { strictPopulate: false }
+        }
+      })
+      .populate({
+        path: 'venue',
+        populate: {
+          path: 'photographIDs',
+          model: 'Photography',
+          options: { strictPopulate: false }
+        }
+      });
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+
 adminRouter.post('/addFood', authenticateAdmin, async (req, res) => {
   try {
     const { cateringName, price, menu, type } = req.body;
@@ -19,7 +50,7 @@ adminRouter.post('/addFood', authenticateAdmin, async (req, res) => {
     const savedFood = await newFood.save();
     console.log("saved Food : ", savedFood)
     // get the Venue collection
-    const Admin_venue = req.admin.venue.toString();
+    const Admin_venue = req.admin.venue.toString(); //not work for two id's or venues
     // console.log("venue Id : ", Admin_venue.toString());
     console.log(savedFood._id);
     const newVenue = await Venue.findOneAndUpdate({ '_id': Admin_venue }, {
@@ -92,10 +123,10 @@ adminRouter.post('/addPhotographer', authenticateAdmin, async (req, res) => {
   }
 })
 
- adminRouter.post("/register", async (req, res) => {
+adminRouter.post("/register", async (req, res) => {
   try {
     const { vendorname, email, phone, venderoffice, password } = req.body;
-    
+
     // Validate the input
     if (!vendorname || !email || !password || !venderoffice || !phone) {
       return res.status(400).json({ error: 'Please enter all the fields' });
@@ -107,11 +138,11 @@ adminRouter.post('/addPhotographer', authenticateAdmin, async (req, res) => {
       return res.status(400).json({ error: 'Email is already registered' });
     }
     console.log("4")
-        // Create a new user
-        const newAdmin = new Admin({ vendorname, email, phone, venderoffice, password } );
-        console.log("5")
-        await newAdmin.save();
-        console.log("6")
+    // Create a new user
+    const newAdmin = new Admin({ vendorname, email, phone, venderoffice, password });
+    console.log("5")
+    await newAdmin.save();
+    console.log("6")
 
     res.status(201).json({ message: 'vendor registered successfully' });
   } catch (error) {

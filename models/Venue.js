@@ -30,12 +30,12 @@ const venueSchema = mongoose.Schema({
   },
   foodIDs: [{
     type: Schema.Types.ObjectId,
-    ref: Food
+    ref: 'Food'
   }],
   photographIDs: [{
     type: Schema.Types.ObjectId,
-    ref: Photography
-  }]
+    ref: 'Photography'
+  }],
 }, { timestamps: true }); 
 
 

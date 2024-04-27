@@ -22,10 +22,10 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  venue:{
+  venue: [{  //this is wrong for now
     type: mongoose.Schema.Types.ObjectId,
-    ref: venue
-  }
+    ref: 'Venue'
+  }],
 }); 
 
 const Admin = mongoose.model('Admin', adminSchema);
