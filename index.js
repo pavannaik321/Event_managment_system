@@ -2,6 +2,10 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+const userRoutes = require('./routes/userRoutes')
+const adminRoutes = require('./routes/AdminRoutes')
+const bookingRoutes = require('./routes/bookingRoutes')
+const venueRoutes = require('./routes/venueRoutes')
 
 // dont touch below this
 
@@ -25,9 +29,14 @@ app.get('/', (req, res) => {
   res.send('server is running');
 });
 
-app.get('/test', (req, res) => {
-  res.send('test the deployment');
-});
+
+
+// Routes
+app.use('/users',userRoutes)
+// app.use('/admin',adminRoutes)
+// app.use('/booking',bookingRoutes)
+// app.use('/venue',venueRoutes)
+
 
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);

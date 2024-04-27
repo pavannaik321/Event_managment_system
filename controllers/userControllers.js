@@ -1,0 +1,49 @@
+const User = require('../models/Users')
+
+const getUserdetails = (req, res) => {
+    res.send('user Detals')
+}
+
+const registerUser = async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
+
+        // Validate the input
+        if (!username && !email && !password) {
+            return res.status(400).json({ error: 'Please enter all the fields' });
+        }
+        // Check if the email is already registered
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Email is already registered' });
+        }
+
+        // Create a new user
+        const newUser = new User({ username, email, password });
+        await newUser.save();
+
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+}
+
+const loginUser = (req, res) => {
+    // try {
+    //     const { email, password } = req.body
+
+    //     //Check if the email and
+        
+    // }
+    // catch (error) {
+    //     console.error(error);
+    //     res.status(500).json({ error: 'Server error' });
+    // }
+}
+
+module.exports = {
+    registerUser,
+    loginUser,
+    getUserdetails
+};
