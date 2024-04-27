@@ -1,0 +1,19 @@
+/backend
+  /config
+    - db.js (Database configuration)
+    - keys.js (Secret keys and API keys)
+  /controllers
+    - authController.js (Authentication logic)
+    - userController.js (User-related logic)
+    - otherController.js (Other controllers as per your app's requirements)
+  /middleware
+    - authMiddleware.js (Authentication middleware)
+    - otherMiddleware.js (Other middleware functions)
+  /models
+    - User.js (User model)
+    - otherModel.js (Other models as per your app's requirements)
+  /routes
+    - authRoutes.js (Authentication routes)
+    - userRoutes.js (User-related routes)
+    - otherRoutes.js (Other routes as per your app's requirements)
+  server.js (Main server file)
