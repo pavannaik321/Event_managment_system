@@ -126,6 +126,7 @@ adminRouter.post('/addPhotographer', authenticateAdmin, async (req, res) => {
 adminRouter.post("/register", async (req, res) => {
   try {
     const { vendorname, email, phone, venderoffice, password } = req.body;
+    console.log(req.body)
 
     // Validate the input
     if (!vendorname || !email || !password || !venderoffice || !phone) {
@@ -162,7 +163,7 @@ adminRouter.post("/login", async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
     if (user.password !== password) {
-      return res.status(401).json({ error: 'Invalid password' });
+      return res.status(400).json({ error: 'Invalid password' });
     }
     //generate jwttoken 
 
